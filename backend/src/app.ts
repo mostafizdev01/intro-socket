@@ -21,7 +21,7 @@ app.get("/", (_req, res) => {
   res.json({
     success: true,
     status: 200,
-    message: "Socket Api is running..."
+    message: "Socket Api is running.."
   });
 });
 
