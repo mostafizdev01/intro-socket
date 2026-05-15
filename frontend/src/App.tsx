@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("https://intro-socket-o3yg.vercel.app");
+const socket = io("https://intro-socket-o3yg.vercel.app", {
+  transports: ["polling", "websocket"],
+});
 
 function App() {
   const [message, setMessage] = useState("");
