@@ -34,3 +34,11 @@ model Chat {
 
   @@map("chats")
 }
+
+model Conversation {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  members String[]
+
+  createdAt DateTime @default(now())
+}

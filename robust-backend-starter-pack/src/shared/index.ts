@@ -48,11 +48,13 @@ export const apiLimiter = rateLimit({
       ipArray.length > 0 ? ipArray[0] : req.connection.remoteAddress;
     return ipAddress;
   },
+  
   message: {
     success: false,
     message:
       'Too many requests from this IP, please try again after 15 minutes',
   },
+
   standardHeaders: true,
   legacyHeaders: false,
 });

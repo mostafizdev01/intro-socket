@@ -41,8 +41,10 @@ app.post(
 
 // Root route (Better: JSON response with icon)
  app.get('/', (req: Request, res: Response) => {
-  res.send({
-    Message: 'The server is running. . .',
+  res.json({
+    status: 200,
+    success: true,
+    message: "Socket Server is running! 🚀",
   });
 });
 
