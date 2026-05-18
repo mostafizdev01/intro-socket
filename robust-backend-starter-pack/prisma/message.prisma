@@ -42,3 +42,15 @@ model Conversation {
 
   createdAt DateTime @default(now())
 }
+
+model Message {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  conversationId String
+
+  senderId String
+
+  text String
+
+  createdAt DateTime @default(now())
+}
