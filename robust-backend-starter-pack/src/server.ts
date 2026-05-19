@@ -1,6 +1,8 @@
 import { createServer, Server as HTTPServer } from 'http';
 import app from './app';
 import config from './config';
+import { Server } from 'socket.io';
+import prisma from './app/utils/prisma';
 // import { initiateSuperAdmin } from './app/db/db';
 
 // import { setupWebSocket } from './app/middlewares/webSocket';
@@ -18,15 +20,49 @@ async function main() {
     // console.log('🌱 Seeding super admin data...');
     // await initiateSuperAdmin();
 
-    console.log(`🚀 Starting server on port ${port}...`);
+    // console.log(`🚀 Starting server on port ${port}...`);
     server.listen(port, () => {
       console.log(`✅ Server is running on port ${port}`);
     });
 
     // WebSocket setup (after listen)
-    console.log('🔌 Setting up WebSocket...');
+    // console.log('🔌 Setting up WebSocket...');
+
+    const io = new Server(server, {
+      cors: {
+        origin: "*"
+      }
+    })
+
+    io.on("connection", (socket)=> {
+      console.log('✅ Socket setup complete. Socket id is 👉 :', socket.id);
+
+
+      socket.on("send_message", async (data)=> {
+
+        // console.log("send data: ", data)
+
+        const savedMessage = await prisma.message.create({
+          data: {
+            conversationId: data.conversationId,
+            senderId: data.senderId,
+            text: data.text
+          }
+        })
+
+        console.log("saveMessage: ", savedMessage)
+
+        io.emit("received_message", savedMessage.text)
+      })
+
+      /// disconnect the socket server
+      socket.on("disconnect", ()=> {
+        console.log("Socket server is disconnect");
+      })
+    })
+
     // await setupWebSocket(server);
-    console.log('✅ WebSocket setup complete!');
+    // console.log('✅ WebSocket setup complete!');
   } catch (error) {
     console.error('❌ Failed to start server:', error);
     process.exit(1);
