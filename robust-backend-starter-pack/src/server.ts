@@ -30,7 +30,7 @@ async function main() {
 
     const io = new Server(server, {
       cors: {
-        origin: "*"
+        origin: "*" /// access all frontend request link
       }
     })
 
